@@ -13,6 +13,8 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  google_fonts: ^1.1.2
+  page_transition: ^1.1.7+6
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:signal_chat/tabbutton_widget.dart';
+import 'package:signal_chat/colors.dart';
+import 'package:page_transition/page_transition.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';
@@ -7,99 +10,189 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+
+  bool _obscureText = true;
+
+  void _toggle(){
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Hero(
-              tag: 'logo',
-              child: Container(
-                height: 200.0,
-                child: Image.asset('images/logo.png'),
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('images/background.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      constraints: BoxConstraints.expand(),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          title: Text("Login with email"),
+          centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_rounded),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+        ),
+        body: SafeArea(
+          child: ListView(
+
+            children: <Widget>[
+              SizedBox(
+                height: 100.0,
               ),
-            ),
-            SizedBox(
-              height: 48.0,
-            ),
-            TextField(
-              onChanged: (value) {
-                //Do something with the user input.
-              },
-              decoration: InputDecoration(
-                hintText: 'Enter your email',
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
+              Hero(
+                tag: 'logo',
+                child: Container(
+                  height: 100.0,
+                  child: Image.asset('images/logo.png'),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            TextField(
-              onChanged: (value) {
-                //Do something with the user input.
-              },
-              decoration: InputDecoration(
-                hintText: 'Enter your password.',
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
+              SizedBox(
+                height: 48.0,
               ),
-            ),
-            SizedBox(
-              height: 24.0,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                color: Colors.lightBlueAccent,
-                borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: () {
-                    //Implement login functionality.
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: Text(
-                    'Log In',
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10.0),
+                child: emailInput(),
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10.0),
+                child: passInput(),
+              ),
+              SizedBox(
+                height: 24.0,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+                child: Hero(
+                  tag: "button2",
+                  child: TabButton(
+                    btnColor: PalletteColors.primaryRed,
+                    btnTxtColor: Colors.white,
+                    btnText: "Log In",
+                    btnFunction: () {
+                      //Implement login functionality.
+                    },
                   ),
                 ),
               ),
-            ),
-          ],
+
+              SizedBox(
+                height: 10.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Don't have an account ?",
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(context, PageTransition(
+                          type: PageTransitionType.fade, child: LoginScreen()));
+                    },
+                    child: Text(
+                      " Sign Up",
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        color: PalletteColors.primaryRed,
+                      ),
+                    ),
+                  ),
+
+                ],
+              ),
+
+            ],
+          ),
         ),
       ),
     );
   }
-}
+  Widget emailInput() {
+      return Theme(
+        child: TextField(
+
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            labelText: "Email ID",
+            prefixIcon: Icon(Icons.mail_outline),
+            labelStyle: TextStyle(fontSize: 14, color: Colors.grey.shade400),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(40),
+              borderSide: BorderSide(
+                color: Colors.grey.shade300,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40),
+                borderSide: BorderSide(
+                  color: Colors.red,
+                )
+            ),
+          ),
+
+
+          textInputAction: TextInputAction.next,
+        ),
+        data: Theme.of(context)
+            .copyWith(accentColor: PalletteColors.primaryRed,),
+      );
+    }
+
+    Widget passInput() {
+      return Theme(
+        data: Theme.of(context)
+            .copyWith(accentColor: PalletteColors.primaryRed,),
+        child: TextField(
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            prefixIcon: Icon(Icons.vpn_key,),
+            labelText: "Password",
+            labelStyle: TextStyle(fontSize: 14, color: Colors.grey.shade400),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(40),
+              borderSide: BorderSide(
+                color: Colors.grey.shade300,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40),
+                borderSide: BorderSide(
+                  color: Colors.red,
+                )
+            ),
+            suffixIcon: IconButton(
+              icon: Icon(
+
+                _obscureText ? Icons.visibility : Icons.visibility_off,
+                color: PalletteColors.primaryGrey,
+              ),
+              onPressed: _toggle,
+            ),
+          ),
+          textInputAction: TextInputAction.done,
+          obscureText: _obscureText,
+        ),
+      );
+    }
+  }
+
