@@ -1,15 +1,39 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:signal_chat/constants.dart';
-
 class ChatScreen extends StatefulWidget {
+
   static String id = 'chat_screen';
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final _auth = FirebaseAuth.instance;
+  User loggedInuser;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    try{
+      final user  =  _auth.currentUser;
+      if(user != null) {
+        loggedInuser = user;
+        print(loggedInuser);
+      }
+
+    }catch(e){
+      print(e);
+    }
+  }
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: AppBar(
         leading: null,
@@ -17,10 +41,11 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                //Implement logout functionality
+                _auth.signOut();
+                Navigator.pop(context);
               }),
         ],
-        title: Text('⚡️Chat'),
+        title: Text('Messages'),
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: SafeArea(

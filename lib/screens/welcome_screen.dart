@@ -27,12 +27,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         vsync: this,
 
       );
-      animationcurve = CurvedAnimation(parent: controller, curve: Curves.decelerate);
+      animationcurve =
+          CurvedAnimation(parent: controller, curve: Curves.decelerate);
       controller.forward();
 
       controller.addListener(() {
         setState(() {
-          print(animationcurve.value);
+
         });
       });
     });
@@ -54,7 +55,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             image: AssetImage('images/background.jpg'),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
-                Colors.white.withOpacity(animationcurve.value/2), BlendMode.dstATop),
+                Colors.white.withOpacity(animationcurve.value / 2),
+                BlendMode.dstATop),
           ),
         ),
         constraints: BoxConstraints.expand(),
@@ -80,21 +82,24 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 30,right: 10),
+                padding: const EdgeInsets.only(left: 30, right: 10),
                 child: Text(
-                    "Instantly chat with friends" ,
-                    style : GoogleFonts.lato(
-                      textStyle: TextStyle(color: Colors.white,fontSize: 50.0,fontWeight: FontWeight.w900),
+                    "Instantly chat with friends",
+                    style: GoogleFonts.lato(
+                      textStyle: TextStyle(color: Colors.white,
+                          fontSize: 50.0,
+                          fontWeight: FontWeight.w900),
                     )
                 ),
 
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 30,right: 30,top:0.8),
+                padding: const EdgeInsets.only(left: 30, right: 30, top: 0.8),
                 child: Text(
-                    "Shaping the future through chat.Keep your favourites a touch away" ,
-                    style : GoogleFonts.lato(
-                      textStyle: TextStyle(color: Colors.white,fontSize: 18.0,height: 1.5),
+                    "Shaping the future through chat.Keep your favourites a touch away",
+                    style: GoogleFonts.lato(
+                      textStyle: TextStyle(
+                          color: Colors.white, fontSize: 18.0, height: 1.5),
                     )
                 ),
 
@@ -103,7 +108,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 height: 22.0,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
                 child: Hero(
                   tag: "button",
                   child: TabButton(
@@ -112,15 +117,15 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     btnText: "Create new account",
 
                     btnFunction: () {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: RegistrationScreen()));
-
-
+                      Navigator.push(context, PageTransition(
+                          type: PageTransitionType.fade,
+                          child: RegistrationScreen()));
                     },
                   ),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
                 child: Hero(
                   tag: "button2",
                   child: TabButton(
@@ -129,7 +134,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     btnText: "Login with email",
 
                     btnFunction: () {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: LoginScreen()));
+                      Navigator.push(context, PageTransition(
+                          type: PageTransitionType.fade, child: LoginScreen()));
                     },
                   ),
                 ),
@@ -137,19 +143,23 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               SizedBox(
                 height: 28.0,
               ),
+              touchID(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                  padding: const EdgeInsets.only(left:20.0,right: 20.0,bottom: 20.0),
-                  child: Text(
-                      "©2021,ArunBalajiR" ,
-                      style : GoogleFonts.lato(
-                        textStyle: TextStyle(color: Colors.white,fontSize: 10.0),
-                      )
-                  ),
+                    padding: const EdgeInsets.only(
+                        left: 20.0, right: 20.0, bottom: 20.0),
+                    child: Text(
+                        "©2021,ArunBalajiR",
+                        style: GoogleFonts.lato(
+                          textStyle: TextStyle(
+                              color: Colors.white, fontSize: 10.0),
+                        )
+                    ),
 
-                ),],
+                  ),
+                ],
               ),
 
             ],
@@ -158,6 +168,30 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       ),
     );
   }
-}
 
+  Widget touchID() {
+    return Container(
+        margin: EdgeInsets.only(top: 10, bottom: 20),
+        child: Column(
+          children: <Widget>[
+
+            SizedBox(
+              height: 20,
+            ),
+            Icon(Icons.fingerprint, size: 60, color: Colors.white),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              'Touch ID',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ],
+        ));
+  }
+}
 

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "144209622900",
+    "project_id": "let-s-chat-715e6",
+    "storage_bucket": "let-s-chat-715e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144209622900:android:208af98d0edd80e435de21",
+        "android_client_info": {
+          "package_name": "com.arunbalaji.signal_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "144209622900-8dprvud6empkm02ap2tao5kv16lus7dh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkA19VFXB-H5BZcgSbXgE0V9YUrqbBo3M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "144209622900-8dprvud6empkm02ap2tao5kv16lus7dh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

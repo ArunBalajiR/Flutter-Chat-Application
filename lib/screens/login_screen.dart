@@ -1,8 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:signal_chat/tabbutton_widget.dart';
 import 'package:signal_chat/colors.dart';
 import 'package:page_transition/page_transition.dart';
-
+import 'chat_screen.dart';
 class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';
   @override
@@ -10,6 +11,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String password;
+  String email;
+  final _auth = FirebaseAuth.instance;
 
 
   bool _obscureText = true;
@@ -31,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       constraints: BoxConstraints.expand(),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -50,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
             children: <Widget>[
               SizedBox(
-                height: 100.0,
+                height: 70.0,
               ),
               Hero(
                 tag: 'logo',
@@ -84,8 +89,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     btnColor: PalletteColors.primaryRed,
                     btnTxtColor: Colors.white,
                     btnText: "Log In",
-                    btnFunction: () {
-                      //Implement login functionality.
+                    btnFunction: () async {
+                      try{
+                        final loggedInUser = await _auth.signInWithEmailAndPassword(email: email, password: password);
+                        if(loggedInUser != null){
+                          Navigator.pushNamed(context, ChatScreen.id);
+
+                        }
+                      }catch(e){
+                        print(e);
+                      }
+
                     },
                   ),
                 ),
@@ -121,6 +135,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
 
+
+
+
             ],
           ),
         ),
@@ -130,12 +147,19 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget emailInput() {
       return Theme(
         child: TextField(
+          onChanged: (value){
+            email = value;
+          },
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
 
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             labelText: "Email ID",
             prefixIcon: Icon(Icons.mail_outline),
-            labelStyle: TextStyle(fontSize: 14, color: Colors.grey.shade400),
+            labelStyle: TextStyle(fontSize: 14,color: Colors.grey.shade400),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(40),
               borderSide: BorderSide(
@@ -148,7 +172,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.red,
                 )
             ),
-          ),
+          )
+          ,
 
 
           textInputAction: TextInputAction.next,
@@ -159,10 +184,18 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     Widget passInput() {
+
       return Theme(
         data: Theme.of(context)
             .copyWith(accentColor: PalletteColors.primaryRed,),
         child: TextField(
+          onChanged: (value){
+            password = value;
+          },
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.vpn_key,),
@@ -194,5 +227,9 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
     }
+
+
   }
+
+
 
