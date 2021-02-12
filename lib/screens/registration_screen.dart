@@ -6,6 +6,7 @@ import 'package:page_transition/page_transition.dart';
 import 'login_screen.dart';
 import 'chat_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:signal_chat/social_icons.dart';
@@ -19,9 +20,12 @@ class RegistrationScreen extends StatefulWidget {
 class _RegistrationScreenState extends State<RegistrationScreen> {
 
   bool _obscureText = true;
+  bool showSpinner = false;
   String name;
   String email;
   String password;
+  final _text = TextEditingController();
+  bool _validate = false;
   final _auth = FirebaseAuth.instance;
 
 
@@ -32,6 +36,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
 
+  @override
+  void dispose() {
+    _text.dispose();
+    super.dispose();
+  }
 
 
   @override
@@ -60,137 +69,147 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0.0,
         ),
-        body: SafeArea(
+        body: ModalProgressHUD(
+          inAsyncCall: showSpinner,
+          child: SafeArea(
 
-          child: ListView(
-              children: <Widget>[
-                SizedBox(
-                  height: 20.0,
-                ),
-                Hero(
-                  tag: 'logo',
-                  child: Container(
-                    height: 100.0,
-                    child: Image.asset('images/logo.png'),
+            child: ListView(
+                children: <Widget>[
+                  SizedBox(
+                    height: 20.0,
                   ),
-                ),
-                SizedBox(
-                  height: 38.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10.0),
-                  child: nameInput(),
-                ),
+                  Hero(
+                    tag: 'logo',
+                    child: Container(
+                      height: 100.0,
+                      child: Image.asset('images/logo.png'),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 38.0,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10.0),
+                    child: nameInput(),
+                  ),
 
-                SizedBox(
-                  height: 5.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10.0),
-                  child: emailInput(),
-                ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10.0),
+                    child: emailInput(),
+                  ),
 
-                SizedBox(
-                  height: 5.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10.0),
-                  child: passInput(),
-                ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10.0),
+                    child: passInput(),
+                  ),
 
-                SizedBox(
-                  height: 18.0,
-                ),
+                  SizedBox(
+                    height: 18.0,
+                  ),
 
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
-                  child: Hero(
-                    tag: "button",
-                    child: TabButton(
-                      btnText: "Sign up",
-                      btnTxtColor: Colors.white,
-                      btnColor: PalletteColors.primaryRed,
-                      btnFunction: () async {
-                        try{
-                          final newUser = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-                          if (newUser != null){
-                            Navigator.pushNamed(context, ChatScreen.id);
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+                    child: Hero(
+                      tag: "button",
+                      child: TabButton(
+                        btnText: "Sign up",
+                        btnTxtColor: Colors.white,
+                        btnColor: PalletteColors.primaryRed,
+                        btnFunction: () async {
+                          _text.text.isEmpty ? _validate = true : _validate = false;
+                          setState(() {
+                            showSpinner = true;
+                          });
+                          try{
+                            final newUser = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+                            if (newUser != null){
+                              Navigator.pushNamed(context, ChatScreen.id);
+                              setState(() {
+                                showSpinner = false;
+                              });
+                            }
+                          }catch(e){
+                            print(e);
                           }
-                        }catch(e){
-                          print(e);
-                        }
 
 
 
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 5.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                        "Already have an account ?" ,
-                        style : TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.white,
-                        ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: LoginScreen()));
-                      },
-                      child: Text(
-                        " Log In" ,
-                        style : TextStyle(
-                          fontSize: 15.0,
-                          color: PalletteColors.primaryRed,
-                        ),
+                        },
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                          "Already have an account ?" ,
+                          style : TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.white,
+                          ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: LoginScreen()));
+                        },
+                        child: Text(
+                          " Log In" ,
+                          style : TextStyle(
+                            fontSize: 15.0,
+                            color: PalletteColors.primaryRed,
+                          ),
+                        ),
+                      ),
 
-                  ],
-                ),
-                SizedBox(
-                  height:  14.0,
-                ),
-                OrDivider(),
-                SizedBox(height:20.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SocialIcon(
-                      colors: [
-                        Color(0xFF102397),
-                        Color(0xFF187adf),
-                        Color(0xFF00eaf8),
-                      ],
-                      icon: Icon(FontAwesome.facebook, color: Colors.white),
-                      onPressed: () {},
-                    ),
-                    SocialIcon(
-                      colors: [
-                        Color(0xFFff4f38),
-                        Color(0xFFff355d),
-                      ],
-                      icon:Icon(FontAwesome.google, color: Colors.white),
-                      onPressed: () {},
-                    ),
+                    ],
+                  ),
+                  SizedBox(
+                    height:  14.0,
+                  ),
+                  OrDivider(),
+                  SizedBox(height:20.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SocialIcon(
+                        colors: [
+                          Color(0xFF102397),
+                          Color(0xFF187adf),
+                          Color(0xFF00eaf8),
+                        ],
+                        icon: Icon(FontAwesome.facebook, color: Colors.white),
+                        onPressed: () {},
+                      ),
+                      SocialIcon(
+                        colors: [
+                          Color(0xFFff4f38),
+                          Color(0xFFff355d),
+                        ],
+                        icon:Icon(FontAwesome.google, color: Colors.white),
+                        onPressed: () {},
+                      ),
 
 
-                  ],
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
 
 
-              ],
+                ],
 
       ),
+          ),
         ),
     ),);
   }
@@ -201,6 +220,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         onChanged: (value){
           email = value;
         },
+        controller: _text,
         style: TextStyle(
           color: Colors.white,
           fontSize: 16.0,
@@ -208,6 +228,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           labelText: "Email ID",
+          errorText: _validate ? 'Please Enter your Email ID' : null,
           prefixIcon: Icon(Icons.mail_outline),
           labelStyle: TextStyle(fontSize: 14,color: Colors.grey.shade400),
           enabledBorder: OutlineInputBorder(
@@ -237,6 +258,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         onChanged: (value){
           name = value;
         },
+        controller: _text,
         style: TextStyle(
           color: Colors.white,
           fontSize: 16.0,
@@ -244,6 +266,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         keyboardType: TextInputType.name,
         decoration: InputDecoration(
           labelText: "Your Name",
+          errorText: _validate ? 'Please Enter your name' : null,
           prefixIcon: Icon(Icons.account_circle_rounded),
           labelStyle: TextStyle(fontSize: 14,color: Colors.grey.shade400),
           enabledBorder: OutlineInputBorder(
@@ -275,6 +298,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         onChanged: (value){
           password = value;
         },
+        controller: _text,
         style: TextStyle(
           color: Colors.white,
           fontSize: 16.0,
@@ -283,6 +307,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.vpn_key,),
           labelText: "Password",
+          errorText: _validate ? 'Password can\'t be empty' : null,
           labelStyle: TextStyle(fontSize: 14,color: Colors.grey.shade400),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(40),
