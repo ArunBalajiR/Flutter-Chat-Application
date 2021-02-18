@@ -4,7 +4,8 @@ import 'package:signal_chat/tabbutton_widget.dart';
 import 'package:signal_chat/colors.dart';
 import 'package:page_transition/page_transition.dart';
 import 'chat_screen.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+
+
 
 class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';
@@ -14,17 +15,23 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool showSpinner = false;
+  // bool showSpinner = false;
   String password;
   String email;
+
+  // final _firestore = Firestore.
   final _auth = FirebaseAuth.instance;
   bool _obscureText = true;
-  final _text = TextEditingController();
   bool _validate = false;
+  final _text1 = TextEditingController();
+  final _text2 = TextEditingController();
+
 
   @override
   void dispose() {
-    _text.dispose();
+    _text1.dispose();
+    _text2.dispose();
+    // _text3.dispose();
     super.dispose();
   }
 
@@ -60,106 +67,105 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0.0,
         ),
-        body: ModalProgressHUD(
-          inAsyncCall: showSpinner,
-          child: SafeArea(
-            child: ListView(
+        body: SafeArea(
+          child: ListView(
 
-              children: <Widget>[
-                SizedBox(
-                  height: 70.0,
-                ),
-                Hero(
+            children: <Widget>[
+              SizedBox(
+                height: 70.0,
+              ),
+              Flexible(
+                child: Hero(
                   tag: 'logo',
                   child: Container(
                     height: 100.0,
                     child: Image.asset('images/logo.png'),
                   ),
                 ),
-                SizedBox(
-                  height: 48.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10.0),
-                  child: emailInput(),
-                ),
-                SizedBox(
-                  height: 8.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10.0),
-                  child: passInput(),
-                ),
-                SizedBox(
-                  height: 24.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
-                  child: Hero(
-                    tag: "button2",
-                    child: TabButton(
-                      btnColor: PalletteColors.primaryRed,
-                      btnTxtColor: Colors.white,
-                      btnText: "Log In",
-                      btnFunction: () async {
-                        _text.text.isEmpty ? _validate = true : _validate = false;
-                        setState((){
-                          showSpinner = true;
-                        });
+              ),
+              SizedBox(
+                height: 48.0,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10.0),
+                child: emailInput(),
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10.0),
+                child: passInput(),
+              ),
+              SizedBox(
+                height: 24.0,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+                child: Hero(
+                  tag: "button2",
+                  child: TabButton(
+                    btnColor: PalletteColors.primaryRed,
+                    btnTxtColor: Colors.white,
+                    btnText: "Log In",
+                    btnFunction: () async {
+                      (_text1.text.isEmpty || _text2.text.isEmpty ) ? _validate = true : _validate = false;
+                      setState((){
+                        // showSpinner = true;
+                      });
 
-                        try{
-                          final loggedInUser = await _auth.signInWithEmailAndPassword(email: email, password: password);
-                          if(loggedInUser != null){
-                            Navigator.pushNamed(context, ChatScreen.id);
-                            setState(() {
-                              showSpinner = false;
-                            });
+                      try{
+                        final loggedInUser = await _auth.signInWithEmailAndPassword(email: email, password: password);
+                        if(loggedInUser != null){
+                          Navigator.pushNamed(context, ChatScreen.id);
+                          setState(() {
+                            // showSpinner = false;
+                          });
 
-                          }
-                        }catch(e){
-                          print(e);
                         }
+                      }catch(e){
+                        print(e);
+                      }
 
-                      },
-                    ),
+                    },
                   ),
                 ),
+              ),
 
-                SizedBox(
-                  height: 10.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account ?",
+              SizedBox(
+                height: 10.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Don't have an account ?",
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(context, PageTransition(
+                          type: PageTransitionType.fade, child: LoginScreen()));
+                    },
+                    child: Text(
+                      " Sign Up",
                       style: TextStyle(
                         fontSize: 15.0,
-                        color: Colors.white,
+                        color: PalletteColors.primaryRed,
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(context, PageTransition(
-                            type: PageTransitionType.fade, child: LoginScreen()));
-                      },
-                      child: Text(
-                        " Sign Up",
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          color: PalletteColors.primaryRed,
-                        ),
-                      ),
-                    ),
+                  ),
 
-                  ],
-                ),
+                ],
+              ),
 
 
 
 
-              ],
-            ),
+            ],
           ),
         ),
       ),
@@ -182,6 +188,21 @@ class _LoginScreenState extends State<LoginScreen> {
             errorText: _validate ? 'Please enter your email' : null,
             prefixIcon: Icon(Icons.mail_outline),
             labelStyle: TextStyle(fontSize: 14,color: Colors.grey.shade400),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(40),
+              borderSide: BorderSide(
+                color: Colors.grey.shade300,
+              ),
+            ),
+
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(40),
+              borderSide: BorderSide(
+                color: Colors.grey.shade300,
+              ),
+            ),
+
+            errorStyle: TextStyle(fontSize: 14),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(40),
               borderSide: BorderSide(
@@ -230,12 +251,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Colors.grey.shade300,
               ),
             ),
+
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(40),
                 borderSide: BorderSide(
                   color: Colors.red,
                 )
             ),
+
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(40),
+              borderSide: BorderSide(
+                color: Colors.grey.shade300,
+              ),
+            ),
+
+            errorStyle: TextStyle(fontSize: 14),
             suffixIcon: IconButton(
               icon: Icon(
 
