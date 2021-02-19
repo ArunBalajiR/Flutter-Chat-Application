@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:signal_chat/colors.dart';
+import 'package:letschat/components/colors.dart';
 
 
 class OrDivider extends StatelessWidget {

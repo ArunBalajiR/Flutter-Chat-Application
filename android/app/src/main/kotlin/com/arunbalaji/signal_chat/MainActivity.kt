@@ -1,4 +1,4 @@
-package com.arunbalaji.signal_chat
+package com.arunbalaji.letschat
 
 import io.flutter.embedding.android.FlutterActivity
 

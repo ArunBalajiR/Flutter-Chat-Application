@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:signal_chat/screens/login_screen.dart';
-import 'package:signal_chat/screens/registration_screen.dart';
+import 'package:letschat/screens/login_screen.dart';
+import 'package:letschat/screens/registration_screen.dart';
+import 'package:letschat/components/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:signal_chat/colors.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:signal_chat/tabbutton_widget.dart';
+import 'package:letschat/widgets/tabbutton_widget.dart';
+
 
 
 class WelcomeScreen extends StatefulWidget {
@@ -143,7 +144,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               SizedBox(
                 height: 28.0,
               ),
-              touchID(),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -169,29 +170,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     );
   }
 
-  Widget touchID() {
-    return Container(
-        margin: EdgeInsets.only(top: 10, bottom: 20),
-        child: Column(
-          children: <Widget>[
 
-            SizedBox(
-              height: 20,
-            ),
-            Icon(Icons.fingerprint, size: 60, color: Colors.white),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Touch ID',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-                decoration: TextDecoration.underline,
-              ),
-            ),
-          ],
-        ));
-  }
 }
 

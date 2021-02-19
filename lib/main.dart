@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:signal_chat/colors.dart';
-import 'package:signal_chat/screens/welcome_screen.dart';
-import 'package:signal_chat/screens/login_screen.dart';
-import 'package:signal_chat/screens/registration_screen.dart';
-import 'package:signal_chat/screens/chat_screen.dart';
+import 'package:letschat/components/colors.dart';
+import 'package:letschat/screens/welcome_screen.dart';
+import 'package:letschat/screens/login_screen.dart';
+import 'package:letschat/screens/registration_screen.dart';
+import 'package:letschat/screens/chat_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 

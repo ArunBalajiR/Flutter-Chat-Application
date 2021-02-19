@@ -1,5 +1,5 @@
-name: signal_chat
-description: A simple chat application inspired from signal app UI
+name: letschat
+description: A simple group chat application using flutter.
 
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -19,7 +19,10 @@ dependencies:
   firebase_auth: ^0.20.0+1
   cloud_firestore: ^0.16.0
   flutter_icons: ^1.1.0
+
+  emoji_picker: ^0.1.0
   intl: ^0.16.1
+  flutter_keyboard_visibility: ^4.0.4
 
 dev_dependencies:
   flutter_test:

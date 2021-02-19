@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:signal_chat/or_divider.dart';
-import 'package:signal_chat/tabbutton_widget.dart';
-import 'package:signal_chat/colors.dart';
+import 'package:letschat/widgets/or_divider.dart';
+import 'package:letschat/widgets/tabbutton_widget.dart';
+import 'package:letschat/components/colors.dart';
 import 'package:page_transition/page_transition.dart';
 import 'login_screen.dart';
 import 'chat_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:modal_progress_hud/modal_progress_hud.dart';
-
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:signal_chat/social_icons.dart';
+import 'package:letschat/widgets/social_icons.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static String id = 'registration_screen';

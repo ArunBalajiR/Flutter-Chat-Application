@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.arunbalaji.signal_chat">
+    package="com.arunbalaji.letschat">
    <application
-        android:label="signal_chat"
+        android:label="Let's Chat"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
