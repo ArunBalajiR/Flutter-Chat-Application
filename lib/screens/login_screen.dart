@@ -74,13 +74,11 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 70.0,
               ),
-              Flexible(
-                child: Hero(
-                  tag: 'logo',
-                  child: Container(
-                    height: 100.0,
-                    child: Image.asset('images/logo.png'),
-                  ),
+              Hero(
+                tag: 'logo',
+                child: Container(
+                  height: 100.0,
+                  child: Image.asset('images/logo.png'),
                 ),
               ),
               SizedBox(
